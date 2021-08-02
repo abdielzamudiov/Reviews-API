@@ -39,6 +39,11 @@ app.get('/reviews/:track', async (req, res) => {
   res.json(reviews);
 });
 
+app.get('/review/:reviewId', async (req, res) => {
+  const review = await Review.findById(req.params.reviewId);
+  res.json(review);
+});
+
 mongoose.connect(
   dbUrl,
   {useNewUrlParser: true, useUnifiedTopology: true},
