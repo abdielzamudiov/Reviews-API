@@ -26,13 +26,27 @@ app.get('/hello', (req, res) => {
 app.post('/review',async (req, res) => {
   try{
     const review = new Review(req.body);
-    const savedMessage = await review.save();
+    const savedReview = await review.save();
     res.sendStatus(200);
   }catch(error){
     res.sendStatus(500);
   }
-
 });
+
+app.put('/review',async (req, res) => {
+  const options = {
+    new: true,
+    useFindAndModify: false
+  }
+  try{
+    const result = await Review.findByIdAndUpdate(req.body._id,req.body, options);
+    res.json(result);
+  }catch(error){
+    console.log(error.message)
+    res.sendStatus(500);
+  }
+});
+
 
 app.get('/reviews/:track', async (req, res) => {
   const reviews = await Review.find({ track: req.params.track });
