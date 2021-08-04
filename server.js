@@ -38,12 +38,14 @@ app.post('/review',async (req, res) => {
   }
 });
 
-app.put('/review',async (req, res) => {
+app.put('/review',authenticateToken,async (req, res) => {
   const options = {
     new: true,
     useFindAndModify: false
   }
   try{
+    if (req.user._id !== req.body.user)
+      res.sendStatus(403);
     const result = await Review.findByIdAndUpdate(req.body._id,req.body, options);
     res.json(result);
   }catch(error){
